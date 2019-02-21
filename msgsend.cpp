@@ -20,23 +20,31 @@ int main() {
 		//这里会加入/n,但是会接收到空格
 		fgets(buffer, BUFSIZ, stdin);
 		//去除'\n'
+		char szbuffer[BUFSIZ] = " ";
 		buffer[strlen(buffer) - 1] = '\0';
+		strcpy(szbuffer, buffer);
+
+		//2 end -> end
 		char* pch = strtok(buffer, " ");
 		if (*pch < '0' && *pch > '9') {
 			printf("Input msg_type is wrong! please input a number not a word!\n");
 			continue;
 		}
 		data.msg_type = atoi(pch);
-		pch = strtok(NULL, " ");
-		if (NULL == pch) {
+
+		pch = szbuffer;
+		while (' ' != *pch) {
+			pch++;
+		}
+		//pch = strtok(NULL, " ");
+		if (' ' != *pch) {
 			printf("You only input msg_type!then you should input function address!\n");
 			continue;
 		}
-		strcpy(buffer, pch);
 
 		//data.msg_type = 1; //注意2
-		printf ("msg_type: %ld\n", data.msg_type);
-		strcpy(data.text, buffer);
+		printf ("msg_buffer: %s\n", pch + 1);
+		strcpy(data.text, ++pch);
 
 		//向对列发送数据
 		if (msgsnd(msgid, (void*)&data, BUFSIZ, 0) == -1) {
@@ -45,7 +53,7 @@ int main() {
 		}
 
 		//输入end结束输入
-		if (strncmp(buffer, "end", 3) == 0) {
+		if (strncmp(pch, "end", 3) == 0) {
 			running = 0;
 		}
 		sleep(1);

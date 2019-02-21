@@ -19,23 +19,34 @@ void create_message_queue(long int msgtype) {
       exit(EXIT_FAILURE);
     }
 
-    printf("You wrote :%s\n", data.text);
+
+    char msgbuf[MESSAGE_NUM][MESSAGE_SIZE] = {""};
+    char* pch = strtok(data.text, " ");
+    for (int i = 0; NULL != pch; i++) {
+      strcpy(msgbuf[i], pch);
+      pch = strtok(NULL, " ");
+    }
+
+    printf("You wrote :%s\n", msgbuf[0]);
 
     //遇到end结束
-    if (0 == strncmp(data.text, "end", 3)) {
+    if (0 == strncmp(msgbuf[0], "end", 3)) {
       running = 0;
+      continue;
     }
 
     FUNC_MAP *phead = GET_FUNC_MAP(Main);
     while (NULL != phead->pStrFuncName) {
-      if (0 == strcmp(phead->pStrFuncName, data.text)) {
-        __asm__ __volatile__(
-          ".code32;"
-          "call *%%eax;"
-          :
-          : "a" (phead->pfn)
-        );
-        break;
+      if (0 == strcmp(phead->pStrFuncName, msgbuf[0])) {
+        printf("You wrote :%s\n", msgbuf[0]);
+        /*if (0 == strcmp("f", phead->pStrFuncName)) {
+          ((void(*)())(phead->pfn))();
+        }*/
+        //改进在这里只需要每个测试函数对应添加一个宏即可
+        DEFINE_FUNC_TYPE_NO("f", void(*)());
+        DEFINE_FUNC_TYPE_ONE("f1", void(*)(char*), char*, "char*", char*(*)(char*));
+        DEFINE_FUNC_TYPE_TWO("f2", void(*)(char*, char*), char*, "char*", char*(*)(char*), char*, "char*", char*(*)(char*));
+        DEFINE_FUNC_TYPE_TWO("f3", void(*)(char*, int), char*, "char*", char*(*)(char*), int, "int", int(*)(char*));
       }
       phead++;
     }

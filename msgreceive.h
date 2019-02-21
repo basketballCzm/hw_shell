@@ -9,7 +9,12 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include "funcmap.h"
+#include "typesmap.h"
+//函数名和函数变量的个数
+#define MESSAGE_NUM 10
 
+//每个字符串的大小
+#define MESSAGE_SIZE 100
 struct msg_st {
     long int msg_type;
     char text[BUFSIZ];

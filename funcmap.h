@@ -9,6 +9,8 @@ struct FUNC_MAP {
     void* pfn;
 };
 
+
+
 #define BEGIN_ITEM_FUNC(name)             FUNC_MAP g_##name##Func[] = {
 
 #define ITEM_FUNC(msgtype, funcname, fun) {msgtype, funcname, fun},
@@ -20,5 +22,6 @@ struct FUNC_MAP {
 #define GET_FUNC_MAP(name)                 g_##name##Func
 
 DECLARE_ITEM_FUNC(Main)
+
 
 #endif
