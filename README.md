@@ -14,7 +14,7 @@
 ![图片](<images/1.png>)
 ![图片](<images/2.png>)
 
-msg_type向maintest发送msgtype=1的消息，maintest不能收到，因为它的msgtype=2。然后发送2 f，maintest顺利的执行了f, 接着分别执行了f1, f2, f3这3个不同类型的函数，maintest的结果显示都成功的运行了这些函数。（在maintest中加入sleep假设该进程一直在运行）。
+msg_type向maintest发送msgtype=1的消息，maintest不能收到，因为它的msgtype=2。然后发送2 f，maintest顺利的执行了f, 接着分别执行了f1, f2, f3, f4（f4的参数类型是自定义的结构体）这4个不同类型的函数，maintest的结果显示都成功的运行了这些函数。（在maintest中加入sleep假设该进程一直在运行）。
 
 
 ## 如何使用
