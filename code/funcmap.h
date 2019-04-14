@@ -1,22 +1,27 @@
-#ifndef __TYPEMAP_H__
-#define __TYPEMAP_H__
+#ifndef __FUNCMAP_H__
+#define __FUNCMAP_H__
+#include <stdio.h>
+#include "../testfunc.h"
 
-struct TYPE_MAP {
-    const char* pStrTypeName;
+struct FUNC_MAP {
+    const int msgType;
+    const char* pStrFuncName;
     void* pfn;
 };
 
-#define BEGIN_ITEM_TYPE(name)             TYPE_MAP g_##name##Type[] = {
 
-#define ITEM_TYPE(typestr, func)          {typestr, func},
 
-#define END_ITEM_TYPE()                    {NULL, NULL}};
+#define BEGIN_ITEM_FUNC(name)             FUNC_MAP g_##name##Func[] = {
 
-#define DECLARE_ITEM_TYPE(name)           extern TYPE_MAP g_##name##Type[];
+#define ITEM_FUNC(msgtype, funcname, fun) {msgtype, funcname, fun},
 
-#define GET_TYPE_MAP(name)                 g_##name##Type
+#define END_ITEM_FUNC()                    {NULL, NULL, NULL}};
 
-DECLARE_ITEM_TYPE(Main)
+#define DECLARE_ITEM_FUNC(name)           extern FUNC_MAP g_##name##Func[];
+
+#define GET_FUNC_MAP(name)                 g_##name##Func
+
+DECLARE_ITEM_FUNC(Main)
 
 #define DEFINE_FUNC_TYPE_NO(name, functype) \
 if (0 == strcmp(name, phead->pStrFuncName)) { \
@@ -178,5 +183,6 @@ if (0 == strcmp(name, phead->pStrFuncName)) { \
     ((functype)(phead->pfn))(var1, var2, var3, var4); \
     break; \
 }
+
 
 #endif

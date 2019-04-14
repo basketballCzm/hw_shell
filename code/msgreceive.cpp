@@ -38,7 +38,6 @@ void create_message_queue(long int msgtype) {
     FUNC_MAP *phead = GET_FUNC_MAP(Main);
     while (NULL != phead->pStrFuncName) {
       if (0 == strcmp(phead->pStrFuncName, msgbuf[0])) {
-        printf("You wrote :%s\n", msgbuf[0]);
         /*if (0 == strcmp("f", phead->pStrFuncName)) {
           ((void(*)())(phead->pfn))();
         }*/
@@ -47,6 +46,7 @@ void create_message_queue(long int msgtype) {
         DEFINE_FUNC_TYPE_ONE("f1", void(*)(char*), char*, "char*", char*(*)(char*));
         DEFINE_FUNC_TYPE_TWO("f2", void(*)(char*, char*), char*, "char*", char*(*)(char*), char*, "char*", char*(*)(char*));
         DEFINE_FUNC_TYPE_TWO("f3", void(*)(char*, int), char*, "char*", char*(*)(char*), int, "int", int(*)(char*));
+        DEFINE_FUNC_TYPE_ONE("f4", void(*)(CZM), CZM, "CZM", CZM(*)(char*));
       }
       phead++;
     }
@@ -54,12 +54,6 @@ void create_message_queue(long int msgtype) {
     if (NULL == phead->pStrFuncName) {
       printf("the function name has not been register! please register the function in funcmap.cpp. \n");
     }
-  }
-
-  //删除消息队列
-  if (msgctl(msgid, IPC_RMID, 0) == -1) {
-    fprintf(stderr, "msgctl(IPC_RMID) failed\n");
-    exit(EXIT_FAILURE);
   }
 
   exit(EXIT_SUCCESS);

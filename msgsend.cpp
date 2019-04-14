@@ -1,4 +1,18 @@
-#include "msgreceive.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <errno.h>
+#include <sys/msg.h>
+//函数名和函数变量的个数
+#define MESSAGE_NUM 10
+
+//每个字符串的大小
+#define MESSAGE_SIZE 100
+struct msg_st {
+	long int msg_type;
+	char text[BUFSIZ];
+};
 
 int main() {
 	int running = 1;
@@ -58,5 +72,12 @@ int main() {
 		}
 		sleep(1);
 	}
+
+	//删除消息队列
+	if (msgctl(msgid, IPC_RMID, 0) == -1) {
+		fprintf(stderr, "msgctl(IPC_RMID) failed\n");
+		exit(EXIT_FAILURE);
+	}
+
 	exit(EXIT_SUCCESS);
 }

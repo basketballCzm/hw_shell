@@ -5,7 +5,7 @@ AC_PROCEQ([2.63])
 AC_INIT([hw_shell],[0.0.1],[18271649397@163.com])
 AC_CONFIG_SRCDIR([msgsend.cpp])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 #Check for programs.
 AC_PROG_CXX([g++])
 AC_PROG_CC([gcc])
