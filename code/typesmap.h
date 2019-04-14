@@ -375,7 +375,6 @@ returntype functionname(char* pstr) { \
         printf("%s do not have parameters type replace, you have to define this function!\n", type5c); \
         return returnVal; \
     } \
-    return returnVal; \
     pheadtype = GET_TYPE_MAP(Main); \
     while (NULL != pheadtype->pStrTypeName) { \
         if (0 == strcmp(type6c, pheadtype->pStrTypeName)) { \

@@ -39,7 +39,7 @@ long strtolong(char* pstr) {
     return atol(pstr);
 }
 
-/*CZM strtoczm(char* pstr) {
+CZM strtoczm(char* pstr) {
     CZM czm;
     if (NULL == pstr) {
         return czm;
@@ -64,9 +64,9 @@ long strtolong(char* pstr) {
 
     return czm;
 
-}*/
+}
 
-DEFINE_TYPE_CONVERT_FUNC_SIX(CZM, strtoczm, char*, "char*", char*(*)(char*), pstr, int, "int", int(*)(char*), int_num, float, "float", float(*)(char*), float_num, double, "double", double(*)(char*), double_num, long, "long", long(*)(char*), long_num, char*, "char*", char*(*)(char*), pstr1)
+/*DEFINE_TYPE_CONVERT_FUNC_SIX(CZM, strtoczm, char*, "char*", char*(*)(char*), pstr, int, "int", int(*)(char*), int_num, float, "float", float(*)(char*), float_num, double, "double", double(*)(char*), double_num, long, "long", long(*)(char*), long_num, char*, "char*", char*(*)(char*), pstr1)*/
 
 
 BEGIN_ITEM_TYPE(Main)
