@@ -36,6 +36,13 @@ int main() {
 		//去除'\n'
 		char szbuffer[BUFSIZ] = " ";
 		buffer[strlen(buffer) - 1] = '\0';
+
+		//输入end结束输入
+		if (strncmp(buffer, "end", 3) == 0) {
+			running = 0;
+			continue;
+		}
+
 		strcpy(szbuffer, buffer);
 
 		//2 end -> end
@@ -66,10 +73,10 @@ int main() {
 			exit(EXIT_FAILURE);
 		}
 
-		//输入end结束输入
+		/*//输入end结束输入
 		if (strncmp(pch, "end", 3) == 0) {
 			running = 0;
-		}
+		}*/
 		sleep(1);
 	}
 

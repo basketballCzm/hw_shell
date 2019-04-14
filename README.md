@@ -45,6 +45,24 @@ msg_type向maintest发送msgtype=1的消息，maintest不能收到，因为它�
 1. 现在有两个项目要使用这个工具project1和project2,不同项目程序的测试函数理论上都可以写在这里，但是这里是funcmap.cpp文件，如果将两个项目的测试函数都写在这里，重新编译project1时会找不到project2中的函数名，因此会报错。这里因为是写demo就暂时这样做，后面会写成配置文件，编译project1时根据msg_type只加载对应项目的测试函数。**这个问题思考了下还是不用改成配置文件，因为改成配置文件之后就不能获取到测试函数的函数地址。因此这个funcmap.cpp需要针对每个项目进行更改。**
 2. 函数类型不明确，因为f,f1,f2的函数类型都不相同，使用空指针类型虽然能够统一的存储地址，但是调用的时候不能转换成f,f1,f2的类型，因此在这里使用内嵌汇编进行跳转。在demo中只测试了无参数的函数，有参数的函数要考虑根据参数类型转换传送给来的数据，然后再传送给汇编码，这里的工作先没有做。**这里自定义了一些宏，用户通过自己编写一些宏来给定程序信息。在msgreceive.cpp中按照一定的格式添加DEFINE_FUNC_TYPE_NO类似的宏。**
 
+## 自定义类型 
+对于如下自定义的类型： 
+```c
+struct CZM {
+    char *pstr;
+    int int_num;
+    float float_num;
+    double double_num;
+    long long_num;
+    char *pstr1;
+};
+``` 
+对应在shell输入的字符串为：{czm,10,10.1,10.11,12345,czmczm}，注意每个成员变量之间必须要以','分隔开，并且中间不能出现空格。 
+对于自定义的类型，用户可以自己写字符串到自定义类型的转换，使用本项目自带的宏来自动生成。对于上面自定义的结构体可以参考下面的宏的写法： 
+```c
+DEFINE_TYPE_CONVERT_FUNC_SIX(CZM, strtoczm, char*, "char*", char*(*)(char*), pstr, int, "int", int(*)(char*), int_num, float, "float", float(*)(char*), float_num, double, "double", double(*)(char*), double_num, long, "long", long(*)(char*), long_num, char*, "char*", char*(*)(char*), pstr1)
+```
+
 **进程与进程之间的通讯使用消息队列**
 
 
