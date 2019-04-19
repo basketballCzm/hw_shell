@@ -8,7 +8,7 @@
 
 int main() {
     //用户自己需要加这一行后重新编译，参数2是用户自定义，表示从消息队列中取出消息的类型，也就是说msg_type=2是发送给maintest的消息。
-    DEFINE_CREATE_MESSAGE_QUEUE(2);
+    DEFINE_CREATE_MESSAGE_QUEUE();
     f();
     char szBuf[255] = "czm";
     char szBuf1[255] = "czmczmczmczmczm";

@@ -17,7 +17,7 @@ struct msg_st {
 int main() {
 	int running = 1;
 	struct msg_st data;
-	char buffer[BUFSIZ];
+	char buffer[BUFSIZ] = "";
 	int msgid = -1;
 
 	//建立消息队列
@@ -34,7 +34,6 @@ int main() {
 		//这里会加入/n,但是会接收到空格
 		fgets(buffer, BUFSIZ, stdin);
 		//去除'\n'
-		char szbuffer[BUFSIZ] = " ";
 		buffer[strlen(buffer) - 1] = '\0';
 
 		//输入end结束输入
@@ -43,29 +42,29 @@ int main() {
 			continue;
 		}
 
-		strcpy(szbuffer, buffer);
+		int cnt = 0;
+		while (' ' == buffer[cnt++]);
+		for (; '\0' != buffer[cnt] && ' ' != buffer[cnt]; cnt++);
+		char szBuffer[BUFSIZ] = "";
+		strncpy(szBuffer, buffer, cnt);
+		szBuffer[cnt] = '\0';
 
-		//2 end -> end
-		char* pch = strtok(buffer, " ");
-		if (*pch < '0' && *pch > '9') {
-			printf("Input msg_type is wrong! please input a number not a word!\n");
-			continue;
-		}
-		data.msg_type = atoi(pch);
-
-		pch = szbuffer;
-		while (' ' != *pch) {
-			pch++;
-		}
-		//pch = strtok(NULL, " ");
-		if (' ' != *pch) {
+		while (' ' == buffer[cnt++]);
+		if ('\0' == buffer[cnt - 1]) {
 			printf("You only input msg_type!then you should input function address!\n");
 			continue;
 		}
 
-		//data.msg_type = 1; //注意2
-		printf ("msg_buffer: %s\n", pch + 1);
-		strcpy(data.text, ++pch);
+		int msg_type = atoi(szBuffer);
+		if (0 == msg_type) {
+			printf("Input msg_type is wrong! please input a number not a word!\n");
+			continue;
+		}
+		data.msg_type = msg_type;
+
+
+		printf ("msg_buffer: %s\n", buffer + cnt - 1);
+		strcpy(data.text, buffer + cnt - 1);
 
 		//向对列发送数据
 		if (msgsnd(msgid, (void*)&data, BUFSIZ, 0) == -1) {
@@ -73,10 +72,6 @@ int main() {
 			exit(EXIT_FAILURE);
 		}
 
-		/*//输入end结束输入
-		if (strncmp(pch, "end", 3) == 0) {
-			running = 0;
-		}*/
 		sleep(1);
 	}
 

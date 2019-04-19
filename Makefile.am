@@ -7,4 +7,4 @@ msgsend_SOURCES=msgsend.cpp
 msgsend_LDADD= 
 
 maintest_SOURCES=maintest.cpp code/msgreceive.cpp code/funcmap.cpp code/typesmap.cpp testfunc.cpp
-maintest_LDADD= 
+maintest_LDADD= -lpthread

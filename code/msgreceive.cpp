@@ -1,8 +1,10 @@
 #include "msgreceive.h"
-void create_message_queue(long int msgtype) {
+void* create_message_queue(void* arg) {
   int running = 1;
   int msgid = -1;
   struct msg_st data;
+  //获取父进程的进程号
+  int msgtype = getpid();
   //接收端的消息类型为0则能够全部接收，大于0才开始进行消息数据包的匹配
 
   //建立消息队列
