@@ -2,7 +2,7 @@
 #define __TESTFUNC_H__
 void f();
 
-void f1(char *pstr);
+int f1(char *pstr);
 
 void f2(char *pstr, char *pstr1);
 
@@ -17,6 +17,6 @@ struct CZM {
     char *pstr1;
 };
 
-void f4(CZM czm);
+CZM f4(CZM czm);
 
 #endif

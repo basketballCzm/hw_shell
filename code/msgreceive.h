@@ -14,8 +14,13 @@
 //函数名和函数变量的个数
 #define MESSAGE_NUM 10
 
+//返回信息的message_type 1
+#define RETURN_MSEEAGE_TYPE 2
+//消息包中的len
+#define BUFSIZ 128
 //每个字符串的大小
 #define MESSAGE_SIZE 100
+//BUFSIZ 8192
 struct msg_st {
     long int msg_type;
     char text[BUFSIZ];
@@ -28,6 +33,12 @@ pthread_t tid = 0; \
 int err = pthread_create(&tid, NULL, &create_message_queue, NULL); \
 if (0 != err) { \
     printf("Can not create thread: %s\n", strerror(err)); \
+}
+
+#define SEND_MESSAGE()\
+if (msgsnd(msgid, (void*)&ret_data, BUFSIZ, 0) == -1) { \
+      fprintf(stderr, "msgsnd failed\n"); \
+      exit(EXIT_FAILURE); \
 }
 
 #endif

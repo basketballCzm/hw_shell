@@ -7,6 +7,7 @@ struct TYPE_MAP {
     void* pfn;
 };
 
+
 //每个函数最大的参数数量
 #define MAX_PARAMETER_NUM 10
 
@@ -24,9 +25,11 @@ struct TYPE_MAP {
 
 DECLARE_ITEM_TYPE(Main)
 
+DECLARE_ITEM_TYPE(Return_Main)
+
 
 //定义类型转换
-#define DEFINE_TYPE_CONVERT_FUNC_ONE(returntype, functionname, type1, type1c, type1func, membername1)  \
+#define DEFINE_TYPE_CONVERT_NUM_ONE(returntype, functionname, type1, type1c, type1func, membername1)  \
 returntype functionname(char* pstr) { \
     returntype returnVal; \
     if (NULL == pstr) { \
@@ -56,7 +59,7 @@ returntype functionname(char* pstr) { \
     return returnVal; \
 }
 
-#define DEFINE_TYPE_CONVERT_FUNC_TWO(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2)  \
+#define DEFINE_TYPE_CONVERT_NUM_TWO(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2)  \
 returntype functionname(char* pstr) { \
     returntype returnVal; \
     if (NULL == pstr) { \
@@ -99,7 +102,7 @@ returntype functionname(char* pstr) { \
 }
 
 
-#define DEFINE_TYPE_CONVERT_FUNC_THREE(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3)  \
+#define DEFINE_TYPE_CONVERT_NUM_THREE(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3)  \
 returntype functionname(char* pstr) { \
     returntype returnVal; \
     if (NULL == pstr) { \
@@ -154,7 +157,7 @@ returntype functionname(char* pstr) { \
 }
 
 
-#define DEFINE_TYPE_CONVERT_FUNC_FOUR(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3, type4, type4c, type4func, membername4)  \
+#define DEFINE_TYPE_CONVERT_NUM_FOUR(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3, type4, type4c, type4func, membername4)  \
 returntype functionname(char* pstr) { \
     returntype returnVal; \
     if (NULL == pstr) { \
@@ -221,7 +224,7 @@ returntype functionname(char* pstr) { \
 }
 
 
-#define DEFINE_TYPE_CONVERT_FUNC_FIVE(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3, type4, type4c, type4func, membername4, type5, type5c, type5func, membername5)  \
+#define DEFINE_TYPE_CONVERT_NUM_FIVE(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3, type4, type4c, type4func, membername4, type5, type5c, type5func, membername5)  \
 returntype functionname(char* pstr) { \
     returntype returnVal; \
     if (NULL == pstr) { \
@@ -300,7 +303,7 @@ returntype functionname(char* pstr) { \
 }
 
 
-#define DEFINE_TYPE_CONVERT_FUNC_SIX(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3, type4, type4c, type4func, membername4, type5, type5c, type5func, membername5, type6, type6c, type6func, membername6)  \
+#define DEFINE_TYPE_CONVERT_NUM_SIX(returntype, functionname, type1, type1c, type1func, membername1, type2, type2c, type2func, membername2, type3, type3c, type3func, membername3, type4, type4c, type4func, membername4, type5, type5c, type5func, membername5, type6, type6c, type6func, membername6)  \
 returntype functionname(char* pstr) { \
     returntype returnVal; \
     if (NULL == pstr) { \

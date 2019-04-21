@@ -6,6 +6,9 @@
 #include <sys/msg.h>
 //函数名和函数变量的个数
 #define MESSAGE_NUM 10
+#define BUFSIZ 128
+//返回信息的message_type 1
+#define RETURN_MSEEAGE_TYPE 1
 
 //每个字符串的大小
 #define MESSAGE_SIZE 100
@@ -29,6 +32,7 @@ int main() {
 
 	//向消息队列中写入消息，直到写入end
 	while (running) {
+		memset((char*)&data, 0, sizeof(msg_st));
 		//输入数据
 		printf("Enter some text:");
 		//这里会加入/n,但是会接收到空格
@@ -71,8 +75,25 @@ int main() {
 			fprintf(stderr, "msgsnd failed\n");
 			exit(EXIT_FAILURE);
 		}
+		memset((char*)&data, 0, sizeof(msg_st));
 
+		//这里不加会造成回复消息的延后
 		sleep(1);
+		// IPC_NOWAIT 不用阻塞，当没有该消息时直接返回 循环取出消息，直到为空
+		while (true) {
+			if (msgrcv(msgid, (void*)&data, BUFSIZ, 2, IPC_NOWAIT) == -1) {
+				if (errno != ENOMSG) {
+					fprintf(stderr, "msgrcv failed with errno: %d\n", errno);
+					exit(EXIT_FAILURE);
+				} else {
+					printf("%d\n", errno);
+					break;
+				}
+			}
+			printf("result: %s\n", data.text);
+			memset((char*)&data, 0, sizeof(msg_st));
+		}
+
 	}
 
 	//删除消息队列

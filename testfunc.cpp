@@ -1,12 +1,16 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include "testfunc.h"
 
 void f() {
+    sleep(3);
     printf("this is f\n");
 }
 
-void f1(char *pstr) {
+int f1(char *pstr) {
     printf("this is f1 %s\n", pstr);
+    return 1000;
 }
 
 void f2(char *pstr, char *pstr1) {
@@ -26,7 +30,8 @@ void f3(char *pstr, int cnt) {
     char *pstr1;
 };*/
 
-void f4(CZM czm) {
+CZM f4(CZM czm) {
     printf("this is czm struct %s, %d, %f, %f, %ld, %s\n", czm.pstr, czm.int_num, czm.float_num, czm.double_num, czm.long_num, czm.pstr1);
+    return czm;
 }
 
