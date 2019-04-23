@@ -1,3 +1,6 @@
+/*
+这个文件的逻辑就是msgsend的处理逻辑，在该文件中起了两个该线程逻辑同时运行，发现能够保持良好的效果。说明该msgsend工具的逻辑能够承受1秒钟1000条指令。这个结果每次消息队列中的值也很少
+*/
 #include <pthread.h> // for thread
 #include <unistd.h>
 #include <stdlib.h>
@@ -20,8 +23,9 @@ int msgid = -1;
 //所有线程共用一个进程的ID，每个线程有自己的线程ID
 void *doSomeThing(void *arg) {
     msg_st msg;
-    msg.msg_type = 27348;
-    strcpy(msg.text, "f1 czm");
+    msg_st recv_msg;
+    msg.msg_type = 3167;
+    strcpy(msg.text, "f1 你好");
 
     while (true) {
         if (msgsnd(msgid, (void*)&msg, BUFSIZ, 0) == -1) {
@@ -29,6 +33,19 @@ void *doSomeThing(void *arg) {
             exit(EXIT_FAILURE);
         }
         usleep(500);
+
+        while (true) {
+            if (msgrcv(msgid, (void*)&recv_msg, BUFSIZ, 2, IPC_NOWAIT) == -1) {
+                if (errno != ENOMSG) {
+                    fprintf(stderr, "recv_msgrcv failed with errno: %d\n", errno);
+                    exit(EXIT_FAILURE);
+                } else {
+                    break;
+                }
+            }
+            printf("result: %s\n", recv_msg.text);
+            memset((char*)&recv_msg, 0, sizeof(msg_st));
+        }
     }
     return NULL;
 }
@@ -36,8 +53,9 @@ void *doSomeThing(void *arg) {
 //所有线程共用一个进程的ID，每个线程有自己的线程ID
 void *doSomeThing1(void *arg) {
     msg_st msg;
-    msg.msg_type = 27346;
-    strcpy(msg.text, "f1 czm");
+    msg_st recv_msg;
+    msg.msg_type = 3169;
+    strcpy(msg.text, "f2 你好 我很好");
 
     while (true) {
         if (msgsnd(msgid, (void*)&msg, BUFSIZ, 0) == -1) {
@@ -45,11 +63,24 @@ void *doSomeThing1(void *arg) {
             exit(EXIT_FAILURE);
         }
         usleep(500);
+
+        while (true) {
+            if (msgrcv(msgid, (void*)&recv_msg, BUFSIZ, 2, IPC_NOWAIT) == -1) {
+                if (errno != ENOMSG) {
+                    fprintf(stderr, "recv_msgrcv failed with errno: %d\n", errno);
+                    exit(EXIT_FAILURE);
+                } else {
+                    break;
+                }
+            }
+            printf("result: %s\n", recv_msg.text);
+            memset((char*)&recv_msg, 0, sizeof(msg_st));
+        }
     }
     return NULL;
 }
 
-void *doSomeThing2(void *arg) {
+/*void *doSomeThing2(void *arg) {
     msg_st msg;
     strcpy(msg.text, "f1 czm");
     while (true) {
@@ -66,7 +97,7 @@ void *doSomeThing2(void *arg) {
     }
     return NULL;
 }
-
+*/
 int main(void) {
     int i = 0;
     int err;
@@ -87,9 +118,9 @@ int main(void) {
     if (err != 0) printf("\n can't create thread:[%s]", strerror(err));
     else printf("\n Thread created successfully\n");
 
-    err = pthread_create(&(tid[2]), NULL, &doSomeThing2, NULL);
-    if (err != 0) printf("\n can't create thread:[%s]", strerror(err));
-    else printf("\n Thread created successfully\n");
+    /*    err = pthread_create(&(tid[2]), NULL, &doSomeThing2, NULL);
+        if (err != 0) printf("\n can't create thread:[%s]", strerror(err));
+        else printf("\n Thread created successfully\n");*/
 
     sleep(300);
     return 0;
