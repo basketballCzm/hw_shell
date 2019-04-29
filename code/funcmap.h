@@ -2,20 +2,21 @@
 #define __FUNCMAP_H__
 #include <stdio.h>
 #include "../testfunc.h"
+#include "msgreceive.h"
 
 struct FUNC_MAP {
-    const int msgType;
     const char* pStrFuncName;
     void* pfn;
 };
 
-
+struct msg_st;
+void cmd_help(msg_st* pmsg);
 
 #define BEGIN_ITEM_FUNC(name)             FUNC_MAP g_##name##Func[] = {
 
-#define ITEM_FUNC(msgtype, funcname, fun) {msgtype, funcname, fun},
+#define ITEM_FUNC(funcname, fun) {funcname, fun},
 
-#define END_ITEM_FUNC()                    {NULL, NULL, NULL}};
+#define END_ITEM_FUNC()                    {NULL, NULL}};
 
 #define DECLARE_ITEM_FUNC(name)           extern FUNC_MAP g_##name##Func[];
 

@@ -86,7 +86,6 @@ int main() {
 					fprintf(stderr, "msgrcv failed with errno: %d\n", errno);
 					exit(EXIT_FAILURE);
 				} else {
-					printf("%d\n", errno);
 					break;
 				}
 			}

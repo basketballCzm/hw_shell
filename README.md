@@ -13,8 +13,9 @@
 
 ![图片](<images/1.png>)
 ![图片](<images/2.png>)
+![图片](<images/3.png>)
 
-msg_type向maintest发送msgtype=1的消息，maintest不能收到，因为它的msgtype=2。然后发送2 f，maintest顺利的执行了f, 接着分别执行了f1, f2, f3, f4（f4的参数类型是自定义的结构体）这4个不同类型的函数，maintest的结果显示都成功的运行了这些函数。（在maintest中加入sleep假设该进程一直在运行）。
+msgsend向maintest发送msgtype=1的消息，maintest不能收到，因为它的msgtype=2。然后发送2 f，maintest顺利的执行了f, 接着分别执行了f1, f2, f3, f4（f4的参数类型是自定义的结构体）这4个不同类型的函数，maintest的结果显示都成功的运行了这些函数。（在maintest中加入sleep假设该进程一直在运行）。
 
 
 ## 如何使用
@@ -68,14 +69,17 @@ DEFINE_TYPE_CONVERT_FUNC_SIX(CZM, strtoczm, char*, "char*", char*(*)(char*), pst
 ## 项目改进 
 1. 消息队列能够保证不同类型的消息一定能够到达指定的进程？ 
 能够保证，因为linux下面的消息队列内核会有锁操作，保证消息的正确到达。msgsend发送消息后，对于执行时间较长的业务函数可能不能及时收到回显消息。  
+https://github.com/basketballCzm/basketballczm.github.io/blob/master/Linux
 2. 消息的回显？ 
 对于回显消息的处理，这里我是又重新定义了一类消息，称为回显消息。客户端发送消息后每次会从消息队列中取出这类回显消息，直到这类回显消息被取空。 
 3. 消息队列下发命令1秒钟1000条？ 
 在test文件夹下有一个test1.cpp文件，该文件模拟了3个进程，两个进程每秒钟放2000个相同类型的请求消息，但是两个进程的消息类型不相同，发现消息队列中消息数量一直维持在一个较低的值，说明系统运行良好。但是也存在一个问题，当放消息的速度过快，取消息的速度太慢，即当客户端在写消息，服务端在写回显消息，但是此时消息队列已经满了，这时客户端和服务端都会出现死锁的现象。但是按照我的msgsend工具的逻辑因为取消息足够快所以不存在死锁。 
 4. 消息传输中文 
 测试了下传输中文和传输中文回来貌似没问题，不清楚具体测试场景。 
-5. 接收消息从进程改成了线程 
-
+5. 接收消息从进程改成了线程  
+线程中能够修改全局变量的值 
+6. 可以通过修改消息队列的容量来提高系统的性能，当前每个消息的大小是128，该消息队列一共可以有存储128个消息。
+https://blog.csdn.net/mao0514/article/details/60879239
 
 
 ## 本demo运行
@@ -85,12 +89,17 @@ DEFINE_TYPE_CONVERT_FUNC_SIX(CZM, strtoczm, char*, "char*", char*(*)(char*), pst
 * autoconf
 * automake --add-missing
 * ./configure
-* make
-
+* make 
 即可生成msgseng和maintest两个可执行文件。
+
+## ipc 基本命令 
+ipcs -q  查看消息队列 
+ipcrm -q ID 
+ipcrm -Q key 
 
 ## 注意事项
 1. 函数指针和空指针之间强制转换
 void* pfn = (void*)f;
 ((void(*)())pfn)();
 2. 既然是一个辅助测试工具，也要适当让用户输入一些信息，前面没有思路是想程序完完整整代替用户工作。
+

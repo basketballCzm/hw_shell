@@ -53,6 +53,10 @@ void* create_message_queue(void* arg) {
           ((void(*)())(phead->pfn))();
         }*/
         //改进在这里只需要每个测试函数对应添加一个宏即可
+        if (0 == strcmp("help", phead->pStrFuncName)) {
+          cmd_help(&ret_data);
+          break;
+        }
         DEFINE_FUNC_TYPE_NO("f", void(*)());
         DEFINE_FUNC_RETURN_TYPE_ONE("f1", int(*)(char*), int, "int", void(*)(int, char*), char*, "char*", char*(*)(char*));
         DEFINE_FUNC_TYPE_TWO("f2", void(*)(char*, char*), char*, "char*", char*(*)(char*), char*, "char*", char*(*)(char*));
@@ -68,7 +72,7 @@ void* create_message_queue(void* arg) {
       continue;
     }
 
-    strcat(ret_data.text , "     Function call succeeded");
+    strcat(ret_data.text , "  Function call succeeded");
     SEND_MESSAGE()
   }
 

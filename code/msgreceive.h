@@ -41,4 +41,10 @@ if (msgsnd(msgid, (void*)&ret_data, BUFSIZ, 0) == -1) { \
       exit(EXIT_FAILURE); \
 }
 
+#define SEND_MESSAGE_USER(data, size)\
+if (msgsnd(msgid, (void*)&data, size, 0) == -1) { \
+      fprintf(stderr, "msgsnd failed\n"); \
+      exit(EXIT_FAILURE); \
+}
+
 #endif

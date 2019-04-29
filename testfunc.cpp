@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "testfunc.h"
 
+int g_num = 0;
+
 void f() {
     sleep(3);
     printf("this is f\n");
@@ -10,7 +12,8 @@ void f() {
 
 int f1(char *pstr) {
     printf("this is f1 %s\n", pstr);
-    return 1000;
+    g_num++;
+    return g_num;
 }
 
 void f2(char *pstr, char *pstr1) {
